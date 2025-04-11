@@ -10,4 +10,6 @@ public interface CrudService <E>{
     void delete(Long id);
 
     E findById(Long id);
+
+    E findChatGroupByName(String name);
 }

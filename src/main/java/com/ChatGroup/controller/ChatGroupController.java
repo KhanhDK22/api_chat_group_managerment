@@ -23,9 +23,15 @@ public class ChatGroupController {
     }
 
     //Hien thi thong tin 1 nhom chat bang id
-    @GetMapping("/{show-chat-group-by-id}/{id}")
-    public ChatGroup findById(@PathVariable Long id) {
-        return chatGroupService.findById(id);
+//    @GetMapping("/{show-chat-group-by-id}/{id}")
+//    public ChatGroup findById(@PathVariable Long id) {
+//        return chatGroupService.findById(id);
+//    }
+
+    //Hien thi thong tin 1 nhom chat bang name
+    @GetMapping("/{find-by-name}/{name}")
+    public ChatGroup findChatGroupByName(@PathVariable String name) {
+        return chatGroupService.findChatGroupByName(name);
     }
 
     //Tao moi nhom chat, Dung DTO ChatGroupCreationRequest de gom du lieu gui len.
@@ -61,7 +67,7 @@ public class ChatGroupController {
         return chatGroup;
     }
 
-    //Xoa nhom chat
+    //Xoa nhom chat theo id
     @DeleteMapping("/{delete-chat-group-by-id}/{id}")
     public void deleteChatGroup(@PathVariable Long id) {
         chatGroupService.delete(id);
