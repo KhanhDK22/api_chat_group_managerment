@@ -1,0 +1,19 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  datasource:
+    url: "jdbc:mysql://localhost:3306/chat_db"
+    username: root
+    password: 1234
+  jpa:
+    hibernate:
+      ddl-auto: update  # T?o b?ng t? ??ng (create, update, validate, none)
+    show-sql: true  # Hi?n th? c�u l?nh SQL trong console
+    properties:
+      hibernate:
+        format_sql: true  # Format SQL cho d? ??c
+    open-in-view: false
+
