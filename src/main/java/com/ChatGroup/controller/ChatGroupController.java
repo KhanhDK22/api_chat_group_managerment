@@ -4,6 +4,7 @@ import com.ChatGroup.dto.request.ChatGroupCreationRequest;
 import com.ChatGroup.dto.request.ChatGroupUpdateRequest;
 import com.ChatGroup.entity.ChatGroup;
 import com.ChatGroup.service.ChatGroupServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,7 +54,7 @@ public class ChatGroupController {
 
     // Tạo mới nhóm chat
     @PostMapping("/create-chat-group")
-    public ChatGroup saveChatGroup(@RequestBody ChatGroupCreationRequest request) {
+    public ChatGroup saveChatGroup(@RequestBody @Valid ChatGroupCreationRequest request) {
         return chatGroupService.createChatGroup(request);
     }
 
@@ -75,7 +76,7 @@ public class ChatGroupController {
 //    }
 
     @PutMapping("/update-chat-group-by-id/{id}")
-    public ChatGroup updateChatGroup(@PathVariable Long id, @RequestBody ChatGroupUpdateRequest request) {
+    public ChatGroup updateChatGroup(@PathVariable Long id, @RequestBody @Valid ChatGroupUpdateRequest request) {
         return chatGroupService.updateChatGroup(id, request);
     }
 

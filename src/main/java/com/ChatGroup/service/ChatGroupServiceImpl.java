@@ -40,19 +40,23 @@ public class ChatGroupServiceImpl implements IChatGroupService{
     }
 
     public ChatGroup createChatGroup(ChatGroupCreationRequest request) {
+
         ChatGroup chatGroup = new ChatGroup();
+
+        if (chatGroupRepository.existsByName(request.getName()))
+            throw new RuntimeException("Name already exists");
+
         chatGroup.setName(request.getName());
         chatGroup.setCreator(request.getCreator());
         chatGroup.setMemberCount(request.getMemberCount());
         chatGroup.setPermission(request.getPermission());
-        chatGroup.setCreatedAt(request.getCreatedAt());
 
         return chatGroupRepository.save(chatGroup);
     }
 
     public ChatGroup updateChatGroup(Long id, ChatGroupUpdateRequest request) {
         ChatGroup chatGroup = chatGroupRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy nhóm chat với id: " + id));
+                .orElseThrow(() -> new RuntimeException("Chat group with id not found: " + id));
 
         chatGroup.setName(request.getName());
         chatGroup.setCreator(request.getCreator());
@@ -61,4 +65,6 @@ public class ChatGroupServiceImpl implements IChatGroupService{
 
         return chatGroupRepository.save(chatGroup);
     }
+
+
 }

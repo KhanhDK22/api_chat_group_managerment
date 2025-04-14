@@ -1,12 +1,11 @@
 package com.ChatGroup.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -26,6 +25,12 @@ public class ChatGroup {
 
     private String permission;
 
-    private LocalDate createdAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss yyyy-MM-dd ")
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void currentCreationDate() {
+        this.createdAt = LocalDateTime.now();
+    }
 
 }

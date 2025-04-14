@@ -8,4 +8,6 @@ public interface ChatGroupRepository extends CrudRepository<ChatGroup, Long> {
 
     @Query("SELECT n FROM ChatGroup n WHERE n.name = :name")
     ChatGroup findChatGroupByName(String name);
+
+    boolean existsByName(String name);
 }
