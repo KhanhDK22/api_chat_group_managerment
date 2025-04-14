@@ -52,7 +52,7 @@ public class ChatGroupController {
 //        return chatGroup;
 //    }
 
-    // Tạo mới nhóm chat
+    // Tao moi nhom chat
     @PostMapping("/create-chat-group")
     public ChatGroup saveChatGroup(@RequestBody @Valid ChatGroupCreationRequest request) {
         return chatGroupService.createChatGroup(request);
