@@ -25,8 +25,13 @@ public class ChatGroupServiceImpl implements IChatGroupService{
     }
 
     @Override
-    public void delete(@Param("id") Long id) {
-        chatGroupRepository.deleteById(id);
+    public boolean delete(@Param("id") Long id) {
+        if (chatGroupRepository.existsById(id)) {
+            chatGroupRepository.deleteById(id); // Xoa nhom chat theo id
+            return true; // Xoa thanh công
+        }
+        return false; // Khong tim thay id
+
     }
 
     @Override

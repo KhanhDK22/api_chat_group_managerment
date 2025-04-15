@@ -5,9 +5,13 @@ import com.ChatGroup.dto.request.ChatGroupUpdateRequest;
 import com.ChatGroup.entity.ChatGroup;
 import com.ChatGroup.service.IChatGroupService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin("*")
@@ -21,38 +25,116 @@ public class ChatGroupController {
         this.iChatGroupService = iChatGroupService;
     }
 
-    //Hien thi tat ca nhom chat
+    // Hien thi all group chat
     @GetMapping("/show-all-chat-group")
-    public List<ChatGroup> findAll() {
-        return iChatGroupService.findAll();
+    public ResponseEntity<Map<String, Object>> findAll() {
+
+        List<ChatGroup> chatGroup = iChatGroupService.findAll();
+
+        Map<String, Object> response = new HashMap<>();
+
+        response.put("status", HttpStatus.OK.value());
+        response.put("message", chatGroup.isEmpty() ? "No chat groups available." : "Chat groups retrieved successfully.");
+        response.put("data", chatGroup);
+
+        return ResponseEntity.ok(response);
     }
 
-    //Hien thi thong tin 1 nhom chat bang id
+    // Hien thi thong tin 1 group chat bang id
     @GetMapping("/show-chat-group-by-id/{id}")
-    public ChatGroup findById(@PathVariable("id") Long id) {
-        return iChatGroupService.findById(id);
+    public ResponseEntity<Map<String, Object>> findById(@PathVariable Long id) {
+
+        ChatGroup chatGroup = iChatGroupService.findById(id);
+
+        // Nếu không tìm thấy, ném RuntimeException với thông điệp lỗi
+        if (chatGroup == null) {
+            throw new RuntimeException("Chat group with ID " + id + " not found.");
+        }
+
+        // Tạo phản hồi nếu tìm thấy
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", HttpStatus.OK.value()); // Trạng thái HTTP: 200
+        response.put("message", "Chat group found successfully");
+        response.put("data", chatGroup);
+
+        return ResponseEntity.ok(response);// Luôn trả về HTTP 200 cho client
     }
 
-    //Hien thi thong tin 1 nhom chat bang name
+    // Hien thi thong tin 1 group chat bang name
     @GetMapping("/find-by-name/{name}")
-    public ChatGroup findChatGroupByName(@PathVariable("name") String name) {
-        return iChatGroupService.findChatGroupByName(name);
+    public ResponseEntity<Map<String, Object>> findChatGroupByName(@PathVariable String name) {
+
+        ChatGroup chatGroup = iChatGroupService.findChatGroupByName(name);
+
+        // Nếu không tìm thấy, ném RuntimeException với thông điệp lỗi
+        if (chatGroup == null) {
+            throw new RuntimeException("Chat group with name " + name + " not found.");
+        }
+
+        // Tạo phản hồi nếu tìm thấy
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", HttpStatus.OK.value()); // Trạng thái HTTP: 200
+        response.put("message", "Chat group found successfully");
+        response.put("data", chatGroup);
+
+        return ResponseEntity.ok(response);
     }
 
-    // Tao moi nhom chat
+    // Tao moi group chat
     @PostMapping("/create-chat-group")
-    public ChatGroup saveChatGroup(@RequestBody @Valid ChatGroupCreationRequest request) {
-        return iChatGroupService.createChatGroup(request);
+    public ResponseEntity<Map<String, Object>> saveChatGroup(@RequestBody @Valid ChatGroupCreationRequest request) {
+
+        Map<String, Object> response = new HashMap<>();
+
+        ChatGroup createdChatGroup = iChatGroupService.createChatGroup(request);
+
+        // Nếu tạo mới thành công
+        response.put("status", HttpStatus.CREATED.value());
+        response.put("message", "Chat group created successfully.");
+        response.put("data", createdChatGroup);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+
+    // Update group chat theo id
     @PutMapping("/update-chat-group-by-id/{id}")
-    public ChatGroup updateChatGroup(@PathVariable("id") Long id, @RequestBody @Valid ChatGroupUpdateRequest request) {
-        return iChatGroupService.updateChatGroup(id, request);
+    public ResponseEntity<Map<String, Object>> updateChatGroup(@PathVariable Long id, @RequestBody @Valid ChatGroupUpdateRequest request) {
+
+        Map<String, Object> response = new HashMap<>();
+
+        ChatGroup updatedChatGroup = iChatGroupService.updateChatGroup(id, request);
+
+        // Kiểm tra kết quả cập nhật
+        if (updatedChatGroup != null) {
+            response.put("status", HttpStatus.OK.value());
+            response.put("message", "Chat group updated successfully.");
+            response.put("data", updatedChatGroup);
+        } else {
+            throw new RuntimeException("Chat group with ID " + id + " not found.");
+        }
+
+        return ResponseEntity.ok(response);
     }
 
-    //Xoa nhom chat theo id
+    // Xoa group chat theo id
     @DeleteMapping("/delete-chat-group-by-id/{id}")
-    public void deleteChatGroup(@PathVariable("id") Long id) {
-        iChatGroupService.delete(id);
+    public ResponseEntity<Map<String, Object>> deleteChatGroup(@PathVariable Long id) {
+
+        Map<String, Object> response = new HashMap<>();
+        
+        boolean isDeleted = iChatGroupService.delete(id);
+
+        // Kiểm tra kết quả xóa
+        if (isDeleted) {
+            response.put("status", HttpStatus.OK.value());
+            response.put("message", "Chat group deleted successfully.");
+            response.put("data", null);
+        } else {
+            throw new RuntimeException("Chat group with ID " + id + " not found.");
+        }
+
+        return ResponseEntity.ok(response);
     }
+
 }
