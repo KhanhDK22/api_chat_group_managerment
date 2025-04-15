@@ -1,12 +1,13 @@
 package com.ChatGroup.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Getter
 @Setter
 public class ChatGroupCreationRequest {
 
-    @NonNull
+    @NotBlank(message = "Name cannot be blank")
     private String name;
 
     private String creator;

@@ -4,7 +4,6 @@ import com.ChatGroup.dto.request.ChatGroupCreationRequest;
 import com.ChatGroup.dto.request.ChatGroupUpdateRequest;
 import com.ChatGroup.entity.ChatGroup;
 import com.ChatGroup.repository.ChatGroupRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
@@ -13,17 +12,16 @@ import java.util.List;
 @Service
 public class ChatGroupServiceImpl implements IChatGroupService{
 
-    @Autowired
+    final
     ChatGroupRepository chatGroupRepository;
+
+    public ChatGroupServiceImpl(ChatGroupRepository chatGroupRepository) {
+        this.chatGroupRepository = chatGroupRepository;
+    }
 
     @Override
     public List<ChatGroup> findAll() {
         return (List<ChatGroup>) chatGroupRepository.findAll();
-    }
-
-    @Override
-    public void save(ChatGroup chatGroup) {
-        chatGroupRepository.save(chatGroup);
     }
 
     @Override
@@ -69,6 +67,4 @@ public class ChatGroupServiceImpl implements IChatGroupService{
 
         return chatGroupRepository.save(chatGroup);
     }
-
-
 }

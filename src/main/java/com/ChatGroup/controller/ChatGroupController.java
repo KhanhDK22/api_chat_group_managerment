@@ -3,10 +3,8 @@ package com.ChatGroup.controller;
 import com.ChatGroup.dto.request.ChatGroupCreationRequest;
 import com.ChatGroup.dto.request.ChatGroupUpdateRequest;
 import com.ChatGroup.entity.ChatGroup;
-import com.ChatGroup.service.ChatGroupServiceImpl;
 import com.ChatGroup.service.IChatGroupService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,8 +13,13 @@ import java.util.List;
 @CrossOrigin("*")
 @RequestMapping("/chat")
 public class ChatGroupController {
-    @Autowired
+
+    final
     IChatGroupService iChatGroupService;
+
+    public ChatGroupController(IChatGroupService iChatGroupService) {
+        this.iChatGroupService = iChatGroupService;
+    }
 
     //Hien thi tat ca nhom chat
     @GetMapping("/show-all-chat-group")

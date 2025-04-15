@@ -5,7 +5,15 @@ import com.ChatGroup.dto.request.ChatGroupUpdateRequest;
 import com.ChatGroup.entity.ChatGroup;
 import org.springframework.data.repository.query.Param;
 
-public interface IChatGroupService extends CrudService<ChatGroup> {
+import java.util.List;
+
+public interface IChatGroupService {
+
+    List<ChatGroup> findAll();
+
+    void delete(Long id);
+
+    ChatGroup findById(Long id);
 
     ChatGroup findChatGroupByName(@Param("name") String name);
 
