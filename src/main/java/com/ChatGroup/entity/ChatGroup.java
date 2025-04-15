@@ -28,10 +28,10 @@ public class ChatGroup {
     @Column(name = "chat_group_memberCount")
     private Integer memberCount;
 
-    @Column(name = "chat_group_permission")
+    @Column(name = "permission")
     private String permission;
 
-    @Column(name = "chat_group_createdAt")
+    @Column(name = "createdAt")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss yyyy-MM-dd ")
     //format lai dinh dang ngay
     private LocalDateTime createdAt;

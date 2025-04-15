@@ -5,6 +5,7 @@ import com.ChatGroup.dto.request.ChatGroupUpdateRequest;
 import com.ChatGroup.entity.ChatGroup;
 import com.ChatGroup.repository.ChatGroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,25 +27,27 @@ public class ChatGroupServiceImpl implements IChatGroupService{
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(@Param("id") Long id) {
         chatGroupRepository.deleteById(id);
     }
 
     @Override
-    public ChatGroup findById(Long id) {
+    public ChatGroup findById(@Param("id") Long id) {
         return chatGroupRepository.findById(id).get();
     }
 
-    public ChatGroup findChatGroupByName(String name) {
+    @Override
+    public ChatGroup findChatGroupByName(@Param("name") String name) {
         return chatGroupRepository.findChatGroupByName(name);
     }
 
+    @Override
     public ChatGroup createChatGroup(ChatGroupCreationRequest request) {
 
         ChatGroup chatGroup = new ChatGroup();
 
-        if (chatGroupRepository.existsByName(request.getName()))
-            throw new RuntimeException("Name already exists");
+//        if (chatGroupRepository.existsByName(request.getName()))
+//            throw new RuntimeException("Name already exists");
 
         chatGroup.setName(request.getName());
         chatGroup.setCreator(request.getCreator());
@@ -54,7 +57,8 @@ public class ChatGroupServiceImpl implements IChatGroupService{
         return chatGroupRepository.save(chatGroup);
     }
 
-    public ChatGroup updateChatGroup(Long id, ChatGroupUpdateRequest request) {
+    @Override
+    public ChatGroup updateChatGroup(@Param("id") Long id, ChatGroupUpdateRequest request) {
         ChatGroup chatGroup = chatGroupRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Chat group with id not found: " + id));
 

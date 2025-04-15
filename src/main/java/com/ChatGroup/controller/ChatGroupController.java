@@ -4,6 +4,7 @@ import com.ChatGroup.dto.request.ChatGroupCreationRequest;
 import com.ChatGroup.dto.request.ChatGroupUpdateRequest;
 import com.ChatGroup.entity.ChatGroup;
 import com.ChatGroup.service.ChatGroupServiceImpl;
+import com.ChatGroup.service.IChatGroupService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ import java.util.List;
 @RequestMapping("/chat")
 public class ChatGroupController {
     @Autowired
-    ChatGroupServiceImpl chatGroupService;
+    IChatGroupService chatGroupService;
 
     //Hien thi tat ca nhom chat
     @GetMapping("/show-all-chat-group")
@@ -25,13 +26,13 @@ public class ChatGroupController {
 
     //Hien thi thong tin 1 nhom chat bang id
     @GetMapping("/show-chat-group-by-id/{id}")
-    public ChatGroup findById(@PathVariable Long id) {
+    public ChatGroup findById(@PathVariable("id") Long id) {
         return chatGroupService.findById(id);
     }
 
     //Hien thi thong tin 1 nhom chat bang name
     @GetMapping("/find-by-name/{name}")
-    public ChatGroup findChatGroupByName(@PathVariable String name) {
+    public ChatGroup findChatGroupByName(@PathVariable("name") String name) {
         return chatGroupService.findChatGroupByName(name);
     }
 
@@ -76,13 +77,13 @@ public class ChatGroupController {
 //    }
 
     @PutMapping("/update-chat-group-by-id/{id}")
-    public ChatGroup updateChatGroup(@PathVariable Long id, @RequestBody @Valid ChatGroupUpdateRequest request) {
+    public ChatGroup updateChatGroup(@PathVariable("id") Long id, @RequestBody @Valid ChatGroupUpdateRequest request) {
         return chatGroupService.updateChatGroup(id, request);
     }
 
     //Xoa nhom chat theo id
     @DeleteMapping("/delete-chat-group-by-id/{id}")
-    public void deleteChatGroup(@PathVariable Long id) {
+    public void deleteChatGroup(@PathVariable("id") Long id) {
         chatGroupService.delete(id);
     }
 }
