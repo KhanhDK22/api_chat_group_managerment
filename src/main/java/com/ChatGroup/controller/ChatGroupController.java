@@ -16,24 +16,24 @@ import java.util.List;
 @RequestMapping("/chat")
 public class ChatGroupController {
     @Autowired
-    IChatGroupService chatGroupService;
+    IChatGroupService iChatGroupService;
 
     //Hien thi tat ca nhom chat
     @GetMapping("/show-all-chat-group")
     public List<ChatGroup> findAll() {
-        return chatGroupService.findAll();
+        return iChatGroupService.findAll();
     }
 
     //Hien thi thong tin 1 nhom chat bang id
     @GetMapping("/show-chat-group-by-id/{id}")
     public ChatGroup findById(@PathVariable("id") Long id) {
-        return chatGroupService.findById(id);
+        return iChatGroupService.findById(id);
     }
 
     //Hien thi thong tin 1 nhom chat bang name
     @GetMapping("/find-by-name/{name}")
     public ChatGroup findChatGroupByName(@PathVariable("name") String name) {
-        return chatGroupService.findChatGroupByName(name);
+        return iChatGroupService.findChatGroupByName(name);
     }
 
     //Tao moi nhom chat, Dung DTO ChatGroupCreationRequest de gom du lieu gui len.
@@ -56,7 +56,7 @@ public class ChatGroupController {
     // Tao moi nhom chat
     @PostMapping("/create-chat-group")
     public ChatGroup saveChatGroup(@RequestBody @Valid ChatGroupCreationRequest request) {
-        return chatGroupService.createChatGroup(request);
+        return iChatGroupService.createChatGroup(request);
     }
 
 
@@ -78,12 +78,12 @@ public class ChatGroupController {
 
     @PutMapping("/update-chat-group-by-id/{id}")
     public ChatGroup updateChatGroup(@PathVariable("id") Long id, @RequestBody @Valid ChatGroupUpdateRequest request) {
-        return chatGroupService.updateChatGroup(id, request);
+        return iChatGroupService.updateChatGroup(id, request);
     }
 
     //Xoa nhom chat theo id
     @DeleteMapping("/delete-chat-group-by-id/{id}")
     public void deleteChatGroup(@PathVariable("id") Long id) {
-        chatGroupService.delete(id);
+        iChatGroupService.delete(id);
     }
 }
