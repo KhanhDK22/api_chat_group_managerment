@@ -4,15 +4,14 @@ import com.ChatGroup.entity.ChatGroup;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @Transactional //Dam bao toan ven du lieu
 public interface ChatGroupRepository extends CrudRepository<ChatGroup, Long> {
 
-    @Query(value = "SELECT * FROM chat_group WHERE chat_group_name = :name", nativeQuery = true)
-    ChatGroup findChatGroupByName(@Param("name") String name);
+    @Query(value = "SELECT * FROM chat_group WHERE name = :name", nativeQuery = true)
+    ChatGroup findChatGroupByName(String name);
 
 }
 

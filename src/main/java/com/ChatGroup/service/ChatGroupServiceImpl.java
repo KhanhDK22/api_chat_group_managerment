@@ -4,13 +4,12 @@ import com.ChatGroup.dto.request.ChatGroupCreationRequest;
 import com.ChatGroup.dto.request.ChatGroupUpdateRequest;
 import com.ChatGroup.entity.ChatGroup;
 import com.ChatGroup.repository.ChatGroupRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class ChatGroupServiceImpl implements IChatGroupService{
+public class ChatGroupServiceImpl implements IChatGroupService {
 
     final
     ChatGroupRepository chatGroupRepository;
@@ -21,55 +20,86 @@ public class ChatGroupServiceImpl implements IChatGroupService{
 
     @Override
     public List<ChatGroup> findAll() {
-        return (List<ChatGroup>) chatGroupRepository.findAll();
-    }
-
-    @Override
-    public boolean delete(@Param("id") Long id) {
-        if (chatGroupRepository.existsById(id)) {
-            chatGroupRepository.deleteById(id); // Xoa nhom chat theo id
-            return true; // Xoa thanh công
+        try {
+            return (List<ChatGroup>) chatGroupRepository.findAll();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to fetch chat groups", e);
         }
-        return false; // Khong tim thay id
 
     }
 
     @Override
-    public ChatGroup findById(@Param("id") Long id) {
-        return chatGroupRepository.findById(id).get();
+    public boolean delete(Long id) {
+        try {
+            if (chatGroupRepository.existsById(id)) {
+                chatGroupRepository.deleteById(id); // Xoa nhom chat theo id
+                return true; // Xoa thanh công
+            } else {
+                throw new RuntimeException("Chat group not found with ID: " + id);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to delete chat group with ID: " + id, e);
+        }
+
     }
 
     @Override
-    public ChatGroup findChatGroupByName(@Param("name") String name) {
-        return chatGroupRepository.findChatGroupByName(name);
+    public ChatGroup findById(Long id) {
+
+        try {
+            return chatGroupRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Chat group not found with ID: " + id));
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to find chat group with ID: " + id, e);
+        }
+
+    }
+
+    @Override
+    public ChatGroup findChatGroupByName(String name) {
+
+        try {
+            return chatGroupRepository.findChatGroupByName(name);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to find chat group by name", e);
+        }
+
+
     }
 
     @Override
     public ChatGroup createChatGroup(ChatGroupCreationRequest request) {
 
-        ChatGroup chatGroup = new ChatGroup();
+        try {
+            ChatGroup chatGroup = new ChatGroup();
 
-//        if (chatGroupRepository.existsByName(request.getName()))
-//            throw new RuntimeException("Name already exists");
+            chatGroup.setName(request.getName());
+            chatGroup.setCreator(request.getCreator());
+            chatGroup.setMemberCount(request.getMemberCount());
+            chatGroup.setPermission(request.getPermission());
 
-        chatGroup.setName(request.getName());
-        chatGroup.setCreator(request.getCreator());
-        chatGroup.setMemberCount(request.getMemberCount());
-        chatGroup.setPermission(request.getPermission());
+            return chatGroupRepository.save(chatGroup);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create chat group", e);
+        }
 
-        return chatGroupRepository.save(chatGroup);
     }
 
     @Override
-    public ChatGroup updateChatGroup(@Param("id") Long id, ChatGroupUpdateRequest request) {
-        ChatGroup chatGroup = chatGroupRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Chat group with id not found: " + id));
+    public ChatGroup updateChatGroup(Long id, ChatGroupUpdateRequest request) {
+        try {
+            ChatGroup chatGroup = chatGroupRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Chat group with id not found: " + id));
 
-        chatGroup.setName(request.getName());
-        chatGroup.setCreator(request.getCreator());
-        chatGroup.setMemberCount(request.getMemberCount());
-        chatGroup.setPermission(request.getPermission());
+            chatGroup.setName(request.getName());
+            chatGroup.setCreator(request.getCreator());
+            chatGroup.setMemberCount(request.getMemberCount());
+            chatGroup.setPermission(request.getPermission());
 
-        return chatGroupRepository.save(chatGroup);
+            return chatGroupRepository.save(chatGroup);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to update chat group with id" + id, e);
+        }
+
     }
 }
