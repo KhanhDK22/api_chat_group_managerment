@@ -46,18 +46,18 @@ public class ChatGroupController {
 
         ChatGroup chatGroup = iChatGroupService.findById(id);
 
-        // Nếu không tìm thấy, ném RuntimeException với thông điệp lỗi
+        // Neu khong tim thay, nem RuntimeException voi thong điep loi
         if (chatGroup == null) {
             throw new RuntimeException("Chat group with ID " + id + " not found.");
         }
 
-        // Tạo phản hồi nếu tìm thấy
+        // Tao phan hoi neu tim thay
         Map<String, Object> response = new HashMap<>();
-        response.put("status", HttpStatus.OK.value()); // Trạng thái HTTP: 200
+        response.put("status", HttpStatus.OK.value()); // Trang thai HTTP: 200
         response.put("message", "Chat group found successfully");
         response.put("data", chatGroup);
 
-        return ResponseEntity.ok(response);// Luôn trả về HTTP 200 cho client
+        return ResponseEntity.ok(response);// Luon tra ve HTTP 200 cho client
     }
 
     // Hien thi thong tin 1 group chat bang name
@@ -66,18 +66,18 @@ public class ChatGroupController {
 
         ChatGroup chatGroup = iChatGroupService.findChatGroupByName(name);
 
-        // Nếu không tìm thấy, ném RuntimeException với thông điệp lỗi
+        // Neu khong tim thay, nem RuntimeException voi thong điep loi
         if (chatGroup == null) {
             throw new RuntimeException("Chat group with name " + name + " not found.");
         }
 
-        // Tạo phản hồi nếu tìm thấy
+        // Tao phan hoi neu tim thay
         Map<String, Object> response = new HashMap<>();
-        response.put("status", HttpStatus.OK.value()); // Trạng thái HTTP: 200
+        response.put("status", HttpStatus.OK.value()); // Trang thai HTTP: 200
         response.put("message", "Chat group found successfully");
         response.put("data", chatGroup);
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(response); // Luon tra ve HTTP 200 cho client
     }
 
     // Tao moi group chat
@@ -88,7 +88,6 @@ public class ChatGroupController {
 
         ChatGroup createdChatGroup = iChatGroupService.createChatGroup(request);
 
-        // Nếu tạo mới thành công
         response.put("status", HttpStatus.CREATED.value());
         response.put("message", "Chat group created successfully.");
         response.put("data", createdChatGroup);
@@ -105,7 +104,7 @@ public class ChatGroupController {
 
         ChatGroup updatedChatGroup = iChatGroupService.updateChatGroup(id, request);
 
-        // Kiểm tra kết quả cập nhật
+        // Kiem tra ket qua cap nhap
         if (updatedChatGroup != null) {
             response.put("status", HttpStatus.OK.value());
             response.put("message", "Chat group updated successfully.");
@@ -122,10 +121,10 @@ public class ChatGroupController {
     public ResponseEntity<Map<String, Object>> deleteChatGroup(@PathVariable Long id) {
 
         Map<String, Object> response = new HashMap<>();
-        
+
         boolean isDeleted = iChatGroupService.delete(id);
 
-        // Kiểm tra kết quả xóa
+        // Kiem tra ket qua xoa
         if (isDeleted) {
             response.put("status", HttpStatus.OK.value());
             response.put("message", "Chat group deleted successfully.");

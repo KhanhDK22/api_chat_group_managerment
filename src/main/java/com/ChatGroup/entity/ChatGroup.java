@@ -2,7 +2,9 @@ package com.ChatGroup.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -14,22 +16,16 @@ import java.time.LocalDateTime;
 public class ChatGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "chat_group_id")
     private Long id;
 
-    @Column(name = "chat_group_name")
     private String name;
 
-    @Column(name = "chat_group_creator")
     private String creator;
 
-    @Column(name = "chat_group_memberCount")
     private Integer memberCount;
 
-    @Column(name = "permission")
     private String permission;
 
-    @Column(name = "createdAt")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss yyyy-MM-dd ")
     //format lai dinh dang ngay
     private LocalDateTime createdAt;
